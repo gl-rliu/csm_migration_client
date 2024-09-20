@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "BankingInfo",
+  "namespace": "com.confluent.dto",
+  "fields": [
+    {
+      "name": "accountId",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "accountPassword",
+      "type": "string",
+      "default": "",
+      "confluent:tags": ["PII"]
+    }
+  ]
+}

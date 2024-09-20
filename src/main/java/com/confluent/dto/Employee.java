@@ -3,30 +3,41 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.javatechie.dto;
+package com.confluent.dto;
 
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Employee extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 5153782928544758334L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Employee\",\"namespace\":\"com.javatechie.dto\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"firstName\",\"type\":\"string\"},{\"name\":\"middleName\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"lastName\",\"type\":\"string\"},{\"name\":\"emailId\",\"type\":\"string\",\"default\":\"\"}]}");
+  private static final long serialVersionUID = -4668976342471522473L;
+
+
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Employee\",\"namespace\":\"com.confluent.dto\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"firstName\",\"type\":\"string\"},{\"name\":\"middleName\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"lastName\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"emailId\",\"type\":\"string\",\"default\":\"\",\"confluent:tags\":[\"PII\"]},{\"name\":\"address\",\"type\":{\"type\":\"record\",\"name\":\"Address\",\"fields\":[{\"name\":\"street\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"city\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"state\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"geoLocation\",\"type\":{\"type\":\"record\",\"name\":\"GeoLocation\",\"fields\":[{\"name\":\"latitude\",\"type\":\"string\",\"default\":\"\",\"confluent:tags\":[\"PII\"]},{\"name\":\"longitude\",\"type\":\"string\",\"default\":\"\",\"confluent:tags\":[\"PII\"]}]},\"default\":{}},{\"name\":\"postalCode\",\"type\":\"string\",\"default\":\"\",\"confluent:tags\":[\"PII\"]}]},\"default\":{}},{\"name\":\"paymentInfo\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"BankingInfo\",\"fields\":[{\"name\":\"accountId\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"accountPassword\",\"type\":\"string\",\"default\":\"\",\"confluent:tags\":[\"PII\"]}]},{\"type\":\"record\",\"name\":\"CreditCardInfo\",\"fields\":[{\"name\":\"cardNumber\",\"type\":\"string\",\"default\":\"\"},{\"name\":\"cardPin\",\"type\":\"string\",\"default\":\"\",\"confluent:tags\":[\"PII\"]}]}],\"default\":null}],\"references\":[{\"name\":\"BankingInfo\",\"subject\":\"com.confluent.dto.BankingInfo\",\"version\":\"latest\"},{\"name\":\"CreditCardInfo\",\"subject\":\"com.confluent.dto.CreditCardInfo\",\"version\":\"latest\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<Employee> ENCODER =
-      new BinaryMessageEncoder<Employee>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<Employee> DECODER =
-      new BinaryMessageDecoder<Employee>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<Employee> getEncoder() {
+    return ENCODER;
+  }
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<Employee> getDecoder() {
     return DECODER;
@@ -35,27 +46,39 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<Employee> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<Employee>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this Employee to a ByteBuffer. */
+  /**
+   * Serializes this Employee to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a Employee from a ByteBuffer. */
+  /**
+   * Deserializes a Employee from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a Employee instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
   public static Employee fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.CharSequence id;
-  @Deprecated public java.lang.CharSequence firstName;
-  @Deprecated public java.lang.CharSequence middleName;
-  @Deprecated public java.lang.CharSequence lastName;
-  @Deprecated public java.lang.CharSequence emailId;
+  private java.lang.CharSequence id;
+  private java.lang.CharSequence firstName;
+  private java.lang.CharSequence middleName;
+  private java.lang.CharSequence lastName;
+  private java.lang.CharSequence emailId;
+  private com.confluent.dto.Address address;
+  private java.lang.Object paymentInfo;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -71,17 +94,27 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
    * @param middleName The new value for middleName
    * @param lastName The new value for lastName
    * @param emailId The new value for emailId
+   * @param address The new value for address
+   * @param paymentInfo The new value for paymentInfo
    */
-  public Employee(java.lang.CharSequence id, java.lang.CharSequence firstName, java.lang.CharSequence middleName, java.lang.CharSequence lastName, java.lang.CharSequence emailId) {
+  public Employee(java.lang.CharSequence id, java.lang.CharSequence firstName, java.lang.CharSequence middleName, java.lang.CharSequence lastName, java.lang.CharSequence emailId, com.confluent.dto.Address address, java.lang.Object paymentInfo) {
     this.id = id;
     this.firstName = firstName;
     this.middleName = middleName;
     this.lastName = lastName;
     this.emailId = emailId;
+    this.address = address;
+    this.paymentInfo = paymentInfo;
   }
 
+  @Override
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return id;
@@ -89,11 +122,14 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
     case 2: return middleName;
     case 3: return lastName;
     case 4: return emailId;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 5: return address;
+    case 6: return paymentInfo;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -102,7 +138,9 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
     case 2: middleName = (java.lang.CharSequence)value$; break;
     case 3: lastName = (java.lang.CharSequence)value$; break;
     case 4: emailId = (java.lang.CharSequence)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    case 5: address = (com.confluent.dto.Address)value$; break;
+    case 6: paymentInfo = value$; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -113,6 +151,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
   public java.lang.CharSequence getId() {
     return id;
   }
+
 
   /**
    * Sets the value of the 'id' field.
@@ -130,6 +169,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
     return firstName;
   }
 
+
   /**
    * Sets the value of the 'firstName' field.
    * @param value the value to set.
@@ -145,6 +185,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
   public java.lang.CharSequence getMiddleName() {
     return middleName;
   }
+
 
   /**
    * Sets the value of the 'middleName' field.
@@ -162,6 +203,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
     return lastName;
   }
 
+
   /**
    * Sets the value of the 'lastName' field.
    * @param value the value to set.
@@ -178,6 +220,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
     return emailId;
   }
 
+
   /**
    * Sets the value of the 'emailId' field.
    * @param value the value to set.
@@ -187,11 +230,45 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
   }
 
   /**
+   * Gets the value of the 'address' field.
+   * @return The value of the 'address' field.
+   */
+  public com.confluent.dto.Address getAddress() {
+    return address;
+  }
+
+
+  /**
+   * Sets the value of the 'address' field.
+   * @param value the value to set.
+   */
+  public void setAddress(com.confluent.dto.Address value) {
+    this.address = value;
+  }
+
+  /**
+   * Gets the value of the 'paymentInfo' field.
+   * @return The value of the 'paymentInfo' field.
+   */
+  public java.lang.Object getPaymentInfo() {
+    return paymentInfo;
+  }
+
+
+  /**
+   * Sets the value of the 'paymentInfo' field.
+   * @param value the value to set.
+   */
+  public void setPaymentInfo(java.lang.Object value) {
+    this.paymentInfo = value;
+  }
+
+  /**
    * Creates a new Employee RecordBuilder.
    * @return A new Employee RecordBuilder
    */
-  public static com.javatechie.dto.Employee.Builder newBuilder() {
-    return new com.javatechie.dto.Employee.Builder();
+  public static com.confluent.dto.Employee.Builder newBuilder() {
+    return new com.confluent.dto.Employee.Builder();
   }
 
   /**
@@ -199,8 +276,12 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
    * @param other The existing builder to copy.
    * @return A new Employee RecordBuilder
    */
-  public static com.javatechie.dto.Employee.Builder newBuilder(com.javatechie.dto.Employee.Builder other) {
-    return new com.javatechie.dto.Employee.Builder(other);
+  public static com.confluent.dto.Employee.Builder newBuilder(com.confluent.dto.Employee.Builder other) {
+    if (other == null) {
+      return new com.confluent.dto.Employee.Builder();
+    } else {
+      return new com.confluent.dto.Employee.Builder(other);
+    }
   }
 
   /**
@@ -208,13 +289,18 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
    * @param other The existing instance to copy.
    * @return A new Employee RecordBuilder
    */
-  public static com.javatechie.dto.Employee.Builder newBuilder(com.javatechie.dto.Employee other) {
-    return new com.javatechie.dto.Employee.Builder(other);
+  public static com.confluent.dto.Employee.Builder newBuilder(com.confluent.dto.Employee other) {
+    if (other == null) {
+      return new com.confluent.dto.Employee.Builder();
+    } else {
+      return new com.confluent.dto.Employee.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for Employee instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Employee>
     implements org.apache.avro.data.RecordBuilder<Employee> {
 
@@ -223,37 +309,51 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
     private java.lang.CharSequence middleName;
     private java.lang.CharSequence lastName;
     private java.lang.CharSequence emailId;
+    private com.confluent.dto.Address address;
+    private com.confluent.dto.Address.Builder addressBuilder;
+    private java.lang.Object paymentInfo;
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.javatechie.dto.Employee.Builder other) {
+    private Builder(com.confluent.dto.Employee.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.firstName)) {
         this.firstName = data().deepCopy(fields()[1].schema(), other.firstName);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.middleName)) {
         this.middleName = data().deepCopy(fields()[2].schema(), other.middleName);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.lastName)) {
         this.lastName = data().deepCopy(fields()[3].schema(), other.lastName);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.emailId)) {
         this.emailId = data().deepCopy(fields()[4].schema(), other.emailId);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
+      }
+      if (isValidValue(fields()[5], other.address)) {
+        this.address = data().deepCopy(fields()[5].schema(), other.address);
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
+      }
+      if (other.hasAddressBuilder()) {
+        this.addressBuilder = com.confluent.dto.Address.newBuilder(other.getAddressBuilder());
+      }
+      if (isValidValue(fields()[6], other.paymentInfo)) {
+        this.paymentInfo = data().deepCopy(fields()[6].schema(), other.paymentInfo);
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
     }
 
@@ -261,8 +361,8 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
      * Creates a Builder by copying an existing Employee instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.javatechie.dto.Employee other) {
-            super(SCHEMA$);
+    private Builder(com.confluent.dto.Employee other) {
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
@@ -282,6 +382,15 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       if (isValidValue(fields()[4], other.emailId)) {
         this.emailId = data().deepCopy(fields()[4].schema(), other.emailId);
         fieldSetFlags()[4] = true;
+      }
+      if (isValidValue(fields()[5], other.address)) {
+        this.address = data().deepCopy(fields()[5].schema(), other.address);
+        fieldSetFlags()[5] = true;
+      }
+      this.addressBuilder = null;
+      if (isValidValue(fields()[6], other.paymentInfo)) {
+        this.paymentInfo = data().deepCopy(fields()[6].schema(), other.paymentInfo);
+        fieldSetFlags()[6] = true;
       }
     }
 
@@ -293,12 +402,13 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       return id;
     }
 
+
     /**
       * Sets the value of the 'id' field.
       * @param value The value of 'id'.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder setId(java.lang.CharSequence value) {
+    public com.confluent.dto.Employee.Builder setId(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.id = value;
       fieldSetFlags()[0] = true;
@@ -318,7 +428,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       * Clears the value of the 'id' field.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder clearId() {
+    public com.confluent.dto.Employee.Builder clearId() {
       id = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -332,12 +442,13 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       return firstName;
     }
 
+
     /**
       * Sets the value of the 'firstName' field.
       * @param value The value of 'firstName'.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder setFirstName(java.lang.CharSequence value) {
+    public com.confluent.dto.Employee.Builder setFirstName(java.lang.CharSequence value) {
       validate(fields()[1], value);
       this.firstName = value;
       fieldSetFlags()[1] = true;
@@ -357,7 +468,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       * Clears the value of the 'firstName' field.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder clearFirstName() {
+    public com.confluent.dto.Employee.Builder clearFirstName() {
       firstName = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -371,12 +482,13 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       return middleName;
     }
 
+
     /**
       * Sets the value of the 'middleName' field.
       * @param value The value of 'middleName'.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder setMiddleName(java.lang.CharSequence value) {
+    public com.confluent.dto.Employee.Builder setMiddleName(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.middleName = value;
       fieldSetFlags()[2] = true;
@@ -396,7 +508,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       * Clears the value of the 'middleName' field.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder clearMiddleName() {
+    public com.confluent.dto.Employee.Builder clearMiddleName() {
       middleName = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -410,12 +522,13 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       return lastName;
     }
 
+
     /**
       * Sets the value of the 'lastName' field.
       * @param value The value of 'lastName'.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder setLastName(java.lang.CharSequence value) {
+    public com.confluent.dto.Employee.Builder setLastName(java.lang.CharSequence value) {
       validate(fields()[3], value);
       this.lastName = value;
       fieldSetFlags()[3] = true;
@@ -435,7 +548,7 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       * Clears the value of the 'lastName' field.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder clearLastName() {
+    public com.confluent.dto.Employee.Builder clearLastName() {
       lastName = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -449,12 +562,13 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       return emailId;
     }
 
+
     /**
       * Sets the value of the 'emailId' field.
       * @param value The value of 'emailId'.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder setEmailId(java.lang.CharSequence value) {
+    public com.confluent.dto.Employee.Builder setEmailId(java.lang.CharSequence value) {
       validate(fields()[4], value);
       this.emailId = value;
       fieldSetFlags()[4] = true;
@@ -474,9 +588,125 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
       * Clears the value of the 'emailId' field.
       * @return This builder.
       */
-    public com.javatechie.dto.Employee.Builder clearEmailId() {
+    public com.confluent.dto.Employee.Builder clearEmailId() {
       emailId = null;
       fieldSetFlags()[4] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'address' field.
+      * @return The value.
+      */
+    public com.confluent.dto.Address getAddress() {
+      return address;
+    }
+
+
+    /**
+      * Sets the value of the 'address' field.
+      * @param value The value of 'address'.
+      * @return This builder.
+      */
+    public com.confluent.dto.Employee.Builder setAddress(com.confluent.dto.Address value) {
+      validate(fields()[5], value);
+      this.addressBuilder = null;
+      this.address = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'address' field has been set.
+      * @return True if the 'address' field has been set, false otherwise.
+      */
+    public boolean hasAddress() {
+      return fieldSetFlags()[5];
+    }
+
+    /**
+     * Gets the Builder instance for the 'address' field and creates one if it doesn't exist yet.
+     * @return This builder.
+     */
+    public com.confluent.dto.Address.Builder getAddressBuilder() {
+      if (addressBuilder == null) {
+        if (hasAddress()) {
+          setAddressBuilder(com.confluent.dto.Address.newBuilder(address));
+        } else {
+          setAddressBuilder(com.confluent.dto.Address.newBuilder());
+        }
+      }
+      return addressBuilder;
+    }
+
+    /**
+     * Sets the Builder instance for the 'address' field
+     * @param value The builder instance that must be set.
+     * @return This builder.
+     */
+
+    public com.confluent.dto.Employee.Builder setAddressBuilder(com.confluent.dto.Address.Builder value) {
+      clearAddress();
+      addressBuilder = value;
+      return this;
+    }
+
+    /**
+     * Checks whether the 'address' field has an active Builder instance
+     * @return True if the 'address' field has an active Builder instance
+     */
+    public boolean hasAddressBuilder() {
+      return addressBuilder != null;
+    }
+
+    /**
+      * Clears the value of the 'address' field.
+      * @return This builder.
+      */
+    public com.confluent.dto.Employee.Builder clearAddress() {
+      address = null;
+      addressBuilder = null;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'paymentInfo' field.
+      * @return The value.
+      */
+    public java.lang.Object getPaymentInfo() {
+      return paymentInfo;
+    }
+
+
+    /**
+      * Sets the value of the 'paymentInfo' field.
+      * @param value The value of 'paymentInfo'.
+      * @return This builder.
+      */
+    public com.confluent.dto.Employee.Builder setPaymentInfo(java.lang.Object value) {
+      validate(fields()[6], value);
+      this.paymentInfo = value;
+      fieldSetFlags()[6] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'paymentInfo' field has been set.
+      * @return True if the 'paymentInfo' field has been set, false otherwise.
+      */
+    public boolean hasPaymentInfo() {
+      return fieldSetFlags()[6];
+    }
+
+
+    /**
+      * Clears the value of the 'paymentInfo' field.
+      * @return This builder.
+      */
+    public com.confluent.dto.Employee.Builder clearPaymentInfo() {
+      paymentInfo = null;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -490,7 +720,20 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
         record.middleName = fieldSetFlags()[2] ? this.middleName : (java.lang.CharSequence) defaultValue(fields()[2]);
         record.lastName = fieldSetFlags()[3] ? this.lastName : (java.lang.CharSequence) defaultValue(fields()[3]);
         record.emailId = fieldSetFlags()[4] ? this.emailId : (java.lang.CharSequence) defaultValue(fields()[4]);
+        if (addressBuilder != null) {
+          try {
+            record.address = this.addressBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("address"));
+            throw e;
+          }
+        } else {
+          record.address = fieldSetFlags()[5] ? this.address : (com.confluent.dto.Address) defaultValue(fields()[5]);
+        }
+        record.paymentInfo = fieldSetFlags()[6] ? this.paymentInfo :  defaultValue(fields()[6]);
         return record;
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -516,3 +759,13 @@ public class Employee extends org.apache.avro.specific.SpecificRecordBase implem
   }
 
 }
+
+
+
+
+
+
+
+
+
+

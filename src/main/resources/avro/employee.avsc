@@ -1,7 +1,7 @@
 {
-  "namespace": "com.javatechie.dto",
   "type": "record",
   "name": "Employee",
+  "namespace": "com.confluent.dto",
   "fields": [
     {
       "name": "id",
@@ -18,12 +18,84 @@
     },
     {
       "name": "lastName",
-      "type": "string"
+      "type": "string",
+      "default": ""
     },
     {
       "name": "emailId",
       "type": "string",
-      "default": ""
+      "default": "",
+      "confluent:tags": ["PII"]
+    },
+    {
+      "default": {},
+      "name": "address",
+      "type": {
+        "fields": [
+          {
+            "default": "",
+            "name": "street",
+            "type": "string"
+          },
+          {
+            "default": "",
+            "name": "city",
+            "type": "string"
+          },
+          {
+            "default": "",
+            "name": "state",
+            "type": "string"
+          },
+          {
+            "default": {},
+            "name": "geoLocation",
+            "type": {
+              "fields": [
+                {
+                  "confluent:tags": ["PII"],
+                  "default": "",
+                  "name": "latitude",
+                  "type": "string"
+                },
+                {
+                  "confluent:tags": ["PII"],
+                  "default": "",
+                  "name": "longitude",
+                  "type": "string"
+                }
+              ],
+              "name": "GeoLocation",
+              "type": "record"
+            }
+          },
+          {
+            "confluent:tags": ["PII"],
+            "default": "",
+            "name": "postalCode",
+            "type": "string"
+          }
+        ],
+        "name": "Address",
+        "type": "record"
+      }
+    },
+    {
+      "name": "paymentInfo",
+      "type": ["null", "BankingInfo", "CreditCardInfo"],
+      "default": null
+    }
+  ],
+  "references": [
+    {
+      "name": "BankingInfo",
+      "subject": "com.confluent.dto.BankingInfo",
+      "version": "latest"
+    },
+    {
+      "name": "CreditCardInfo",
+      "subject": "com.confluent.dto.CreditCardInfo",
+      "version": "latest"
     }
   ]
 }
