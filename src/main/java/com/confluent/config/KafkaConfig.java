@@ -1,6 +1,5 @@
 package com.confluent.config;
 
-import com.confluent.dto.Event;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;

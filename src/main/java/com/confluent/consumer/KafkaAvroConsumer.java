@@ -1,8 +1,8 @@
 package com.confluent.consumer;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.avro.generic.GenericRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -18,7 +18,8 @@ public class KafkaAvroConsumer {
     public void read(ConsumerRecord<String, GenericRecord> consumerRecord) {
         String key = consumerRecord.key();
         GenericRecord event = consumerRecord.value();
-        log.info("Avro message received for key : " + key + " value : " + event.toString());
+
+        log.info("Avro message received for key : " + key + " value : " + event.toString() + "schema: " + event.getSchema());
 
     }
 }
