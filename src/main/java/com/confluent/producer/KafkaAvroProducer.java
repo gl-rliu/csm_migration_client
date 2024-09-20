@@ -27,11 +27,6 @@ public class KafkaAvroProducer {
     @Value("${topic.name}")
     private String topicName;
 
-    @Value("${spring.kafka.properties.schema.registry.url}")
-    private String schemaRegistryUrl;
-
-    @Value("${spring.kafka.properties.basic.auth.user.info}")
-    private String basicAuthCredentials;
 
     @Autowired
     public KafkaAvroProducer(KafkaTemplate<String, GenericRecord> template,
@@ -50,7 +45,7 @@ public class KafkaAvroProducer {
             avroRecord.put("accountNumber", event.getAccountNumber());
             avroRecord.put("paymentId", event.getPaymentId());
             avroRecord.put("eventTime", event.getEventTime());
-            System.out.println("sending....");
+            System.out.println("sending...." + schema.toString() + " " + avroRecord.toString());
             //log.info("Serialized the record using schema " + schema.toString() +" -> " + avroRecord.toString());
 
             CompletableFuture<SendResult<String, GenericRecord>> future = template.send(topicName,

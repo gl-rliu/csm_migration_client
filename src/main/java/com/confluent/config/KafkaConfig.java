@@ -33,6 +33,10 @@ public class KafkaConfig {
     @Value("${spring.kafka.properties.security.protocol}")
     private String securityProtocol;
 
+    @Value("${spring.kafka.properties.basic.auth.user.info}")
+    private String basicAuthCredentials;
+
+
     @Bean
     public ProducerFactory<String, GenericRecord> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -43,6 +47,13 @@ public class KafkaConfig {
         configProps.put("security.protocol", securityProtocol);
         configProps.put("sasl.mechanism", saslMechanism);
         configProps.put("sasl.jaas.config", saslJaasConfig);
+
+        configProps.put("basic.auth.credentials.source", "USER_INFO");
+        configProps.put("schema.registry.basic.auth.user.info", basicAuthCredentials);
+
+
+
+
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
