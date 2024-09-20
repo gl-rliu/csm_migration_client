@@ -1,5 +1,6 @@
 package com.confluent.producer;
 
+import com.confluent.consumer.KafkaAvroConsumer;
 import com.confluent.dto.Event;
 import com.confluent.services.SchemaRegistryService;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,8 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -23,6 +26,8 @@ public class KafkaAvroProducer {
     private final KafkaTemplate<String, GenericRecord> template;
     private final Schema schema;
     private final SchemaRegistryService schemaRegistryService;
+
+    Logger log = LoggerFactory.getLogger(KafkaAvroProducer.class);
 
     @Value("${topic.name}")
     private String topicName;
@@ -45,8 +50,8 @@ public class KafkaAvroProducer {
             avroRecord.put("accountNumber", event.getAccountNumber());
             avroRecord.put("paymentId", event.getPaymentId());
             avroRecord.put("eventTime", event.getEventTime());
-            System.out.println("sending...." + schema.toString() + " " + avroRecord.toString());
-            //log.info("Serialized the record using schema " + schema.toString() +" -> " + avroRecord.toString());
+            //System.out.println("sending...." + schema.toString() + " " + avroRecord.toString());
+            log.info("Serialized the record using schema " + schema.toString() +" -> " + avroRecord.toString());
 
             CompletableFuture<SendResult<String, GenericRecord>> future = template.send(topicName,
                     UUID.randomUUID().toString(),
